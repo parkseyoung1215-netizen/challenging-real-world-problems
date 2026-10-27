@@ -11,12 +11,16 @@ What I took away from this challenge is that I should keep trying to use AI to w
 
 **Result.** `a280537_n28_58.txt` gives 58 points in the 28 × 28 × 28 grid {0..27}³, no four of them coplanar. So **a(28) ≥ 58**.
 
+**Archived:** Zenodo, https://doi.org/10.5281/zenodo.23700817
+
 **Previous best known.** Al Zimmermann's 2016 contest "Non-Coplanar Points" reports 66 points for n = 29. Any plane x = const can hold at most 3 points, so removing the three outer layers x = 28, y = 28 and z = 28 from a 66-point configuration removes at most 9 points and leaves at least 57 points in the 28 × 28 × 28 grid. So a(28) ≥ 57 follows from the n = 29 result. The contest configurations are not public, so 57 is the best bound that can be derived from published values. 58 improves it by one.
 
 - The OEIS entry lists terms and lower bounds only up to n = 18.
 - Al Zimmermann's contest results: https://azspcs.com/Contest/Tetrahedra/FinalReport
 
 **Correction (2026-10-17).** I first wrote that my 57-point configuration (`a280537_n28_57.txt`) was a new lower bound, because I thought the previous best for n = 28 was 56. That was wrong: a(28) ≥ 57 already follows from the n = 29 result, as explained above. The 57-point file is kept for the record.
+
+**OEIS (2026-10-28).** I proposed this bound for A280537. The editors decided not to add results for n > 18 to the entry while the exact terms for n > 8 are still unknown, so the link was not included. The submission and discussion are in the [A280537 edit history](https://oeis.org/history?seq=A280537).
 
 ## Verification
 1. `verify4.py`: for every 4-subset of the points, the integer determinant det(b−a, c−a, d−a) is nonzero.
