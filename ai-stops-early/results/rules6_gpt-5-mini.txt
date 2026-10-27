@@ -1,0 +1,164 @@
+[L1 D1_data 반복1 라운드0] 정답
+  RULE: Every solution is of the form n = 3^k * d where d is any odd divisor of 2^{3^k} + 1 (so starting from 1 you can multiply any n by any divisor q of 2^n+1 to get another solution), generate solutions by closing under multiplying by divisors of 2^n+1 while n <= LIMIT.
+[L1 D1_data 반복2 라운드0] 오답 16514280796
+  RULE: All solutions are generated from 1 by repeatedly multiplying by odd primes p that divide 2^d+1 for some previously obtained divisor d (in particular the set is closed under multiplying by 3), so start from 1, find primes dividing 2^{3^t}+1 for small t, and grow candidates by multiplying allowed prim
+[L1 D1_data 반복3 라운드0] 오답 13697910697
+  RULE: For odd n, n | 2^n + 1 iff for every odd prime p | n the multiplicative order of 2 mod p is 2*s for some odd s dividing n; in practice all such s appearing are powers of 3, so n = 3^e * (product of distinct primes p with ord_p(2)=2*3^k and k ≤ e).
+[L1 D1_data 반복4 라운드0] 오답 23841385681
+  RULE: Every solution n has the form n = 3**A * m where every prime factor p of m satisfies ord_p(2) = 2*3^t for some t <= A (equivalently p divides 2**(3**A) + 1), so for fixed A we can use the prime divisors of 2**(3**A)+1 (among primes <= LIMIT) and combine them (with multiplicity) to build all n with v
+[L1 D1_data 반복5 라운드0] 오답 13697910697
+  RULE: n = 3^k * m where m is an odd divisor of 2^{3^k} + 1 (with gcd(m,3)=1); equivalently, for each k>=0 take every odd divisor m of 2^{3^k}+1 not divisible by 3 and n=3^k*m <= LIMIT.
+[L1 D1_data 반복6 라운드0] 오답 23841385681
+  RULE: Every solution n is of the form n = 3^a * d where every prime divisor p of d divides 2^{3^a}+1; enumerate such d (with arbitrary prime powers) up to LIMIT//3^a and verify n | 2^n + 1.
+[L1 D2_data_check 반복2 라운드0] 오답 23841385681
+  RULE: For n odd let m = v3(n). Then n = 3**m * s where every prime divisor of s divides 2**(3**m) + 1; conversely every such product (with arbitrary prime powers) yields n | 2**n + 1.
+[L1 D2_data_check 반복2 라운드1] 오답 23841385681
+  RULE: Every solution n is odd; write n = 3**m * s with 3 ∤ s. Every prime divisor p of s must divide 2**(3**m) + 1. Conversely, starting from base 3**m and multiplying by primes that divide 2**(3**m)+1 (building up prime powers when each intermediate n still satisfies 2**n ≡ -1 (mod n)) generates all solu
+[L1 D2_data_check 반복2 라운드2] 오답 23841385681
+  RULE: Every solution n is odd; write n = 3**m * s with gcd(s,3)=1. Every odd prime p | s must divide 2**(3**t) + 1 for some t ≤ m (equivalently ord_p(2) = 2*3^t); generate candidates by taking primes that divide 2**(3**m)+1 and forming products (with powers) times 3**m, testing 2**n ≡ -1 (mod n) for each 
+[L1 D2_data_check 반복1 라운드0] 오답 13697910697
+  RULE: Every solution has the shape n = 3**k * m where m is an odd divisor of 2**(3**k) + 1; enumerate k with 3**k <= LIMIT and for each k take all divisors m of 2**(3**k)+1 with m <= LIMIT//3**k.
+[L1 D2_data_check 반복1 라운드1] 오답 13697910697
+  RULE: Every solution has the shape n = 3**k * m where m is an odd divisor of A_k = 2**(3**k) + 1; enumerate k with 3**k <= LIMIT and for each k find all divisors m <= LIMIT//3**k of A_k by finding all prime powers p**e dividing A_k with p <= LIMIT//3**k and combining them.
+[L1 D2_data_check 반복1 라운드2] 오답 13697910697
+  RULE: Every solution n is n = 3**k * m where gcd(m,3)=1 and every prime divisor p of m divides A_k = 2**(3**k) + 1; for each k with 3**k <= LIMIT enumerate primes p <= LIMIT//3**k that divide A_k and combine their allowed prime-powers to form all m <= LIMIT//3**k.
+[L1 D2_data_check 반복3 라운드0] 정답
+  RULE: All solutions form the multiplicative closure generated from 1 by repeatedly multiplying a known solution n by any prime p that divides 2^n+1 (if n and p both divide 2^n+1 then np divides 2^{np}+1), so we generate solutions by BFS starting at 1 and for each solution n we find primes p with p | 2^n+1
+[L1 D2_data_check 반복4 라운드0] 오답 13697910697
+  RULE: Every solution is odd and equals n = 3^a * m where each odd prime divisor p of m satisfies ord_p(2) = 2*3^t for some t ≤ a (equivalently p | 2^{3^t}+1); conversely any squarefree m composed of such primes with 3^a*m ≤ LIMIT gives a candidate which we verify by testing 2^n ≡ -1 (mod n).
+[L1 D2_data_check 반복4 라운드1] 오답 13697910697
+  RULE: Every solution is odd and equals n = 3^a * m where m is a squarefree product of distinct primes p (p ≠ 3) such that for some t ≤ a we have 2^{3^t} ≡ -1 (mod p) (equivalently ord_p(2) = 2·3^u for some u ≤ a); my earlier code failed because the prime sieve was too small — include all primes up to at l
+[L1 D2_data_check 반복4 라운드2] 오답 13697910697
+  RULE: Every solution n is odd and divides 2^{3^a}+1 where a = v_3(n) (equivalently n = 3^a * m and every prime power p^e || n (p≠3) divides 2^{3^a}+1), so enumerate for each a the prime-power divisors p^e ≤ LIMIT of 2^{3^a}+1 and form all divisors ≤ LIMIT (verify each).
+[L1 D2_data_check 반복5 라운드0] 오답 23841385681
+  RULE: Every solution n has the form n = 3**a * m (with v3(n)=a) where every odd prime divisor p of m divides 2**(3**a) + 1; it suffices to enumerate a (v3), find primes p <= LIMIT//3**a with 2**(3**a) ≡ -1 (mod p), combine their powers (with p^e <= LIMIT//3**a) and test n | 2**n + 1.
+[L1 D2_data_check 반복5 라운드1] 오답 23841385681
+  RULE: Let a = v3(n). Every odd prime p | n has multiplicative order ord_p(2)=2*3^k for some k ≤ a, hence p | (2^(3^a)+1); so n = 3^a * m where every odd prime divisor of m divides 2^(3^a)+1 — enumerate a, take primes dividing 2^(3^a)+1 (for p ≤ LIMIT//3^a), form products m ≤ LIMIT//3^a and verify n | 2^n+
+[L1 D2_data_check 반복5 라운드2] 오답 code_error
+  RULE: I had wrongly assumed the odd part of ord_p(2) must be a pure power of 3; in fact ord_p(2)=2*t where t is an odd divisor of n and t can have other prime factors — so we must search for self-consistent (closed) sets of primes where each prime's odd-part factors are included among the primes of n, the
+[L1 D2_data_check 반복6 라운드0] 오답 23841385681
+  RULE: Every n>1 dividing 2^n+1 is odd, 3 divides n, and every odd prime p|n has minimal m with 2^m ≡ -1 (mod p) equal to a power of 3; hence n = 3^a * product of prime powers whose primes satisfy 2^{3^k} ≡ -1 (mod p) for some k ≤ a.
+[L1 D2_data_check 반복6 라운드1] 정답
+  RULE: Start from n=1 and repeatedly multiply by any prime p that divides 2^n+1 (possibly increasing the power of an existing prime); if p | 2^n+1 then n*p divides 2^{n*p}+1, so all solutions are reachable by this multiplicative generation and direct verification.
+[L2 D1_data 반복1 라운드0] 정답
+  RULE: Every solution n>1 has v2(n)=1, so n = 2*m with odd m, and m must satisfy m | (3^(2*m) + 1); furthermore the odd part m is closed under multiplying by any odd prime divisor p of 3^(2*m)+1 (i.e. one can build all m by starting at 1 and repeatedly adjoining odd primes p that divide 3^(2*m)+1).
+[L2 D1_data 반복2 라운드0] 오답 6271066323
+  RULE: All solutions are n = 2*5^k * d for some integer k >= 0 where d is any odd divisor of 3^(2*5^k) + 1 (take d=1 as allowed); include n=1 separately.
+[L2 D1_data 반복3 라운드0] 정답
+  RULE: If n | 3^n + 1 and p is any odd prime divisor of 3^n + 1, then n*p | 3^{n*p} + 1, so starting from 2 and repeatedly multiplying by odd primes p that divide 3^current + 1 generates all solutions (1 is the only odd solution).
+[L2 D1_data 반복4 라운드0] 오답 4929407833
+  RULE: Every solution n>1 is of the form n = 2 * 5^a * 101^b * 1181^c (a,b,c >= 0); enumerate all such n <= LIMIT and test n | 3^n + 1.
+[L2 D1_data 반복5 라운드0] 오답 6271066323
+  RULE: Every solution n (besides n=1) has the form n = 2*5^k * s where s is an odd divisor of 3^{B}+1 with B = 2*5^k (so s | 3^{B}+1); equivalently n = B * s with B = 2*5^k and s odd dividing 3^B+1.
+[L2 D1_data 반복6 라운드0] 오답 4929407833
+  RULE: Every n > 2 with n | 3^n + 1 has the form n = 2 * 5^a * 101^b * 1181^c (with a,b,c >= 0); include 1 separately.
+[L2 D2_data_check 반복1 라운드0] 정답
+  RULE: Every solution n>1 is even, n = 2*m with m odd, and each odd prime divisor p of m must satisfy 4 | ord_p(3) (so p ≡ 1 (mod 4) except p=5); thus all solutions can be found by multiplicatively building n from 2 by adding odd primes (mostly p=5 or p≡1 mod4) and keeping those n with 3^n ≡ -1 (mod n).
+[L2 D2_data_check 반복2 라운드0] 오답 632953973
+  RULE: Every n>1 with n | 3^n + 1 has the form n = 2 * 5^k * r where r is an odd squarefree product of primes p with ord_p(3) = 2 * 5^k; include n=1.
+[L2 D2_data_check 반복2 라운드1] 오답 36619803227
+  RULE: For each n>1 write n = 2 * 5^a * r (a >= 0); every odd prime p | r must satisfy that ord_p(3) is even and ord_p(3)/2 divides 2*5^a, so ord_p(3) | 4*5^a (i.e. ord divides that o); enumerate a up to LIMIT, for small a recover candidate primes by factoring 3^d+1 for d in {5^v,2*5^v}, and for larger a s
+[L2 D2_data_check 반복2 라운드2] 오답 6271066323
+  RULE: n must be even; write n = 2 * 5^a * r (a >= 0) and every odd prime p | r must satisfy that for some d dividing 2*5^a we have 3^d ≡ -1 (mod p); generate candidates from such primes by multiplying distinct primes (each to the first power) and verify 3^n ≡ -1 (mod n).
+[L2 D2_data_check 반복3 라운드0] 정답
+  RULE: For n>1 we have n = 2 * 5^k * m (k >= 0) with m odd and every prime divisor p of m dividing 3^{2*5^k} + 1; conversely every such n ≤ LIMIT works.
+[L2 D2_data_check 반복4 라운드0] 오답 6271066323
+  RULE: All solutions are n=1 or n=2*m where m = 5^a * ∏ p (distinct primes ≠5) with each prime p satisfying ord_p(3) = 4 * 5^{t_p} (so ord has only prime factors 2 and 5 and is divisible by 4), and a ≥ max(t_p).
+[L2 D2_data_check 반복4 라운드1] 오답 610351563 (패턴만 셈)
+  RULE: All solutions are n=1 or n=2*m where m is odd of the form m = 5^a * ∏ p (distinct primes p ≠ 5) with each such prime p satisfying ord_p(3) = 2 * 5^{t_p} (i.e. the multiplicative order of 3 modulo p is even and half of it is a power of 5), and the exponent a satisfies a ≥ max(t_p) over primes in the 
+[L2 D2_data_check 반복4 라운드2] 오답 6271066323
+  RULE: All solutions are n = 1 or n = 2*m with m odd; every odd prime p dividing m satisfies that the multiplicative order ord_p(3) is of the form 2*5^t or 4*5^t for some t, and the 5-adic exponent of m is at least the maximal such t among its prime divisors. Generate all m from such primes (found by sievi
+[L2 D2_data_check 반복5 라운드0] 정답
+  RULE: Every n>1 with n | 3^n+1 is even, and can be written n = 2 * 5^k * m where every odd prime divisor p of m satisfies 3^{2*5^k} ≡ -1 (mod p) (so p divides 3^{2*5^k}+1); enumerate such m (with allowed prime powers while staying ≤ LIMIT) and verify n | 3^n+1.
+[L2 D2_data_check 반복6 라운드0] 오답 6271066323
+  RULE: All solutions n>2 are exactly numbers of the form n = 10 * 5**a * m where a >= 0 and m is an odd divisor of 3**(10 * 5**a) + 1; include also n=1 and n=2.
+[L2 D2_data_check 반복6 라운드1] 오답 6271066323
+  RULE: All solutions are n = 1, n = 2, or n = 10 * 5**a * m where a >= 0 and m is an odd divisor of 3**(10 * 5**a) + 1; include those n <= LIMIT.
+[L2 D2_data_check 반복6 라운드2] 오답 timeout
+  RULE: The earlier rule was too restrictive — for n>2 we must have v2(n)=1, and every odd prime p | n satisfies that 3^(r/2) ≡ -1 (mod p) where r = ord_p(3) (so r is even and r/2 divides n); equivalently each odd prime divisor p of n divides 3^t + 1 for some t | n. So generate solutions by closure: start f
+[L3 D1_data 반복1 라운드0] 오답 4911849679
+  RULE: Every solution n>1 has the form n = 2*m with m odd and m | (2**(2*m-1) + 1); in particular every odd prime divisor p of m satisfies p ≡ 3 (mod 4), so we search m as products of primes ≡3 (mod 4).
+[L3 D1_data 반복2 라운드0] 오답 7519316753
+  RULE: n = 1 or n = 2*m where m is odd and 2^(2*m - 1) ≡ -1 (mod m) (equivalently m | 2^(2*m-1) + 1)
+[L3 D1_data 반복3 라운드0] 오답 4924885477
+  RULE: All solutions are n = 1 or n = 2*m where m is odd and for every odd prime p | m one has ord_p(2) = 2*t with t odd, equivalently 2^{2m-1} ≡ -1 (mod p); so m satisfies a system of congruences m ≡ (t+1)/2 (mod t) for those primes and can be found by combining these congruences with CRT and testing m | 
+[L3 D1_data 반복4 라운드0] 오답 timeout
+  RULE: Every solution n>2 has the form n = 2*m with m odd, and for each prime p | m the multiplicative order ord_p(2) equals 2*t with t odd; equivalently 2^{2m-1} ≡ -1 (mod m), so m must satisfy for every p|m the congruence 2^{2m-1} ≡ -1 (mod p).
+[L3 D1_data 반복5 라운드0] 오답 173299179
+  RULE: Every solution is n=1 or n=2*m with odd m; every odd prime p|m has ord_p(2) even with exactly one factor 2 (i.e. v2(ord_p(2))=1), so generate squarefree products of such primes (up to LIMIT/2) and test m | 2^(2m-1)+1.
+[L3 D1_data 반복6 라운드0] 오답 timeout
+  RULE: Every solution n>1 is even; write n = 2*m with m odd, and every such m appears as an odd divisor (>1) of 2^e + 1 for some exponent e obtained by the recursion e_0 = 1, e_{k+1} = 2*m_k - 1 (so we repeatedly take odd divisors of 2^{e}+1 and continue).
+[L3 D2_data_check 반복2 라운드0] 오답 2411949285
+  RULE: Every solution is n=1 or n=2*m where m is odd and m | 2^(2*m-1)+1; such m can be generated starting from m=1 and repeatedly multiplying by any prime divisor p of 2^(2*m-1)+1 (in particular p=4*m-1 when that is prime).
+[L3 D2_data_check 반복2 라운드1] 오답 719248885
+  RULE: All solutions are n = 1 or n = 2*m with odd m; generate odd m by BFS starting from m=1 and, for each current m, try multiplying by any prime p <= LIMIT//(2*m) that satisfies p | (2^(2*m-1)+1) (checked by pow(2,2*m-1,p)==p-1) — and also try the special candidate p = 4*m-1 when prime.
+[L3 D2_data_check 반복1 라운드0] 오답 75
+  RULE: Every solution n>2 is even but not divisible by 4, so n = 2*m with odd m; the odd m form the sequence m_{k+1} = rad(2^{2*m_k-1}+1) (product of distinct prime divisors of 2^{2*m_k-1}+1), starting from m_1 = 1 (so n=2), and n=1 must be included.
+[L3 D2_data_check 반복1 라운드1] 오답 200351985
+  RULE: Every solution n>2 has the form n = 2*m with odd m, and every odd solution-m can be built starting from m=1 and repeatedly multiplying the current m by a prime p that divides 2^{2*m-1} + 1 (explore all such multiplicative extensions and keep those <= LIMIT/2).
+[L3 D2_data_check 반복1 라운드2] 오답 timeout
+  RULE: My earlier multiplicative-generation idea was wrong: primes dividing 2^{2m-1}+1 need not all appear as factors of earlier m in a single chain starting from m=1, so you cannot generate all solutions by repeatedly taking the radical of 2^{2m-1}+1. The correct verification is simply that for n odd we n
+[L3 D2_data_check 반복3 라운드0] 오답 timeout
+  RULE: For n>1 any solution must be even; writing n = 2*m with m odd, the condition is equivalent to m | 2^(2*m-1) + 1, so valid n are exactly n = 2*m where m is an odd divisor of 2^(2*m-1) + 1.
+[L3 D2_data_check 반복3 라운드1] 오답 554878389
+  RULE: For n>1 any solution must be even; writing n = 2*m with m odd, the condition is equivalent to m | 2^(2*m-1) + 1, so we search m odd with m | 2^(2*m-1)+1 and take n = 2*m.
+[L3 D2_data_check 반복3 라운드2] 오답 1406636277
+  RULE: For n>1 any solution must have v2(n)=1, so n = 2*m with m odd, and the condition is equivalent to m | 2^(2*m-1) + 1; we search odd m with that property and take n = 2*m.
+[L3 D2_data_check 반복4 라운드0] 오답 75
+  RULE: n = 1 or n = 2*m where m is odd and m | 2^{2m-1}+1 (equivalently 2^{2m-1} ≡ -1 (mod m)); start with m=1 and iteratively form new m by taking the product of distinct prime divisors of 2^{2*m-1}+1 (radical), collecting 2*m (and 1) up to LIMIT.
+[L3 D2_data_check 반복4 라운드1] 오답 554028165
+  RULE: n = 1 or n = 2*m where m is odd and m | 2^{2*m-1}+1; generate m by iterating m <- rad(2^{2*m-1}+1) (product of distinct prime divisors) starting from m=1, and verify each candidate n.
+[L3 D2_data_check 반복4 라운드2] 오답 timeout
+  RULE: n = 1 or n = 2*m where m is odd and m | 2^{2*m-1}+1; m need not be the full radical of 2^{2*m-1}+1 (it can be any product of distinct primes p that divide 2^{2*m-1}+1), so generate m by BFS: for each discovered m compute the set S of prime divisors p of 2^{2*m-1}+1 (found among primes up to a practi
+[L3 D2_data_check 반복5 라운드0] 오답 1531033725
+  RULE: All solutions n>1 are even; write n = 2*m with odd m satisfying m | 2^(2*m-1) + 1. Such m can be found by exploring divisors of numbers 2^d+1 for d = 2*m0-1 produced by previously found m0 (start with m0=1), testing which divisors m' also satisfy m' | 2^(2*m'-1)+1.
+[L3 D2_data_check 반복5 라운드1] 오답 1531033725
+  RULE: All solutions n>1 are even; write n = 2*m with odd m, and m must satisfy m | 2^(2*m-1) + 1. My earlier code missed many solutions because the sieve of primes used to find prime divisors of numbers 2^d+1 (d = 2*m-1) was too small; the corrected program increases the prime-search range and avoids an e
+[L3 D2_data_check 반복5 라운드2] 오답 1531033725
+  RULE: All solutions n>1 are even; write n = 2*m with odd m, and m must satisfy m | 2^(2*m-1) + 1. Generate valid odd m by BFS: for each discovered m compute d = 2*m-1, find primes p (<= PRIMECAP) with p | 2^d+1, and form all products of prime powers of those p (<= LIMIT//2) to test as new m.
+[L3 D2_data_check 반복6 라운드0] 오답 150742459
+  RULE: All solutions n>1 are n=2*m where m is a product of distinct primes from a recursively generated prime set P: start with t=1 giving p=4*t-1=3; whenever t is any product of primes already in P and p=4*t-1 is prime, add p to P; any product of distinct primes from P (including 1) gives an m and n=2*m i
+[L3 D2_data_check 반복6 라운드1] 오답 150742459
+  RULE: All solutions n>1 are n = 2*m where m is an odd squarefree product of primes from the closure P generated as follows: start with P = {3}; repeatedly form all squarefree products t of primes in P (including 1) with t <= LIMIT//2, and whenever p = 4*t - 1 is prime and <= LIMIT//2 add p to P; stop when
+[L3 D2_data_check 반복6 라운드2] 오답 9
+  RULE: For n>1 we have n=2*m with odd m, and for each prime p | m we must have p | 2^{2*(m/p)-1}+1; hence primes that can appear are exactly prime divisors p of numbers A_t = 2^{2t-1}+1 where t runs over squarefree products of already found primes (starting with t=1 giving A_1=3). Build the closure of such
+[L4 D1_data 반복1 라운드0] 오답 timeout
+  RULE: Every n with n | 2^n + 1 is n = 3^k * d where d is an odd divisor of 2^{3^k} + 1 (equivalently each prime divisor p of n divides 2^{3^k}+1 where k = v3(n)).
+[L4 D1_data 반복2 라운드0] 오답 timeout
+  RULE: All solutions are generated from 1 by repeatedly multiplying the current n by any odd prime p that divides 2^n + 1 (if p | 2^n+1 then n*p | 2^{n*p}+1); so start from 1 and explore n -> n*p (<= LIMIT) for such primes.
+[L4 D1_data 반복3 라운드0] 오답 2191
+  RULE: Start from all powers of 3 (including 1); if n divides 2^n+1 and d>1 is any divisor of 2^n+1 with gcd(d,n)=1, then n*d also divides 2^{n*d}+1, so generate all solutions ≤ LIMIT by repeatedly multiplying known solutions by coprime divisors of 2^n+1.
+[L4 D1_data 반복4 라운드0] 오답 151
+  RULE: Every prime divisor p of n has order ord_p(2)=2*3^a for some a, so n must be of the form 3^t times a product of primes p whose minimal a satisfies a ≤ t (prime powers allowed); generate such candidates and test 2^n ≡ -1 (mod n).
+[L4 D1_data 반복5 라운드0] 오답 95
+  RULE: Every solution n is odd and has the form n = 3^a * (product of distinct primes p ≠ 3), where for each such prime p the multiplicative order of 2 mod p is 2·3^t for some t ≤ a (equivalently p divides 2^{3^t}+1 for its minimal such t); primes ≠ 3 occur only to the first power.
+[L4 D1_data 반복6 라운드0] 오답 95
+  RULE: Every solution n is odd and has the form n = 3^a * s where s is a squarefree product of primes p (p != 3) for which the multiplicative order of 2 modulo p equals 2*3^t for some t ≤ a.
+[L4 D2_data_check 반복1 라운드0] 오답 timeout
+  RULE: For n>1, let M = 3^a be the exact power of 3 dividing n; then every prime divisor p of n/M must divide 2^M + 1, and conversely any n = M * t with t coprime to 3 whose prime factors all divide 2^M + 1 satisfies n | 2^n + 1.
+[L4 D2_data_check 반복1 라운드1] 오답 151
+  RULE: For n>1, write n = 3^a * t with gcd(t,3)=1; every prime divisor p of t must satisfy 2^{3^a} ≡ -1 (mod p). Thus for each a with M=3^a we find primes p with pow(2, M, p) == p-1 and form all t <= LIMIT//M from those primes (with arbitrary powers), then test n = M*t.
+[L4 D2_data_check 반복1 라운드2] 정답
+  RULE: Write n = 3^a * t with gcd(t,3)=1. For each odd prime p | t let ord_p(2) = 2*d (it must be even); then d must divide n, so t must be a multiple of r = d/gcd(d,3^a). Thus a prime p is usable for this a only if the prime factors of r can themselves be built from usable primes (closure). Generate the c
+[L4 D2_data_check 반복2 라운드0] 정답
+  RULE: Every solution n is odd and can be obtained starting from 1 by repeatedly multiplying the current value by primes p that divide 2^current + 1 (higher powers handled via LTE); we do a search that only tries primes p ≤ LIMIT/current.
+[L4 D2_data_check 반복3 라운드0] 정답
+  RULE: All solutions are obtained by starting at n=1 and repeatedly multiplying by primes p that satisfy 2^d ≡ -1 (mod p) for some d that divides the current n (equivalently, p's minimal d with 2^d ≡ -1 must divide n, and (n/d) must be odd).
+[L4 D2_data_check 반복4 라운드0] 오답 151
+  RULE: For n>1 we must have 3 | n; write n = 3^a * m (with m odd and gcd(m,3)=1). Every prime divisor p of m divides 2^{3^a}+1, so m is composed only of prime factors of 2^{3^a}+1; conversely every such n divides 2^n+1.
+[L4 D2_data_check 반복4 라운드1] 오답 151
+  RULE: Every solution n>1 is odd and can be written n = 3^a * m (gcd(m,3)=1), and every prime p | m satisfies pow(2, 3^a, p) == p-1 (equivalently p divides 2^{3^a}+1); conversely any m composed only of such primes (with multiplicity) gives n that must be checked directly.
+[L4 D2_data_check 반복4 라운드2] 오답 151
+  RULE: Every solution n>1 is odd and can be written n = 3^a * m (gcd(m,3)=1); every prime p | m satisfies 2^{3^t} ≡ -1 (mod p) for some 0 ≤ t ≤ a (equivalently p | 2^{3^t}+1), so for each a we take the primes that divide some 2^{3^t}+1 with t ≤ a, build products m from those primes (allowing prime powers) 
+[L4 D2_data_check 반복5 라운드0] 오답 139
+  RULE: Every solution n has the form n = 3**k * m where every prime divisor of m divides 2**(3**k) + 1 (conversely such n satisfy n | 2**n + 1).
+[L4 D2_data_check 반복5 라운드1] 오답 151
+  RULE: Every solution n has the form n = 3**k * m (k >= 0) where each prime divisor p of m divides 2**(3**t) + 1 for some t <= k (equivalently ord_p(2) = 2*3**t for some t <= k).
+[L4 D2_data_check 반복5 라운드2] 오답 timeout
+  RULE: Every solution n > 1 has the form n = 3^k * m (k >= 1, m odd and gcd(m,3)=1) where every prime divisor p of m divides 2^(3^t) + 1 for some t <= k (equivalently ord_p(2) = 2*3^t for some t <= k); therefore it suffices to find the primes p that occur in some 2^(3^t)+1 and build all products of their p
+[L4 D2_data_check 반복6 라운드0] 오답 no_code
+  RULE: Every n>1 with n | 2^n + 1 is odd and of the form n = 3^a * m where every prime divisor p of m satisfies ord_p(2) = 2 * 3^t for some t ≤ a (equivalently p | 2^{3^t} + 1 for some t ≤ a), and m is squarefree with each such p appearing to the first power.
+[L4 D2_data_check 반복6 라운드1] 오답 timeout
+  RULE: Every n>1 with n | 2^n + 1 is odd and can be written n = 3^a * m where for every prime p | m there is some t ≤ a with p | 2^{3^t} + 1 (take the minimal such t for each p).
+[L4 D2_data_check 반복6 라운드2] 오답 69
+  RULE: Compute all solutions n ≤ 10^6 by brute force to discover the small prime divisors that actually occur; for each discovered prime p find the minimal t with p | 2^{3^t}+1, then generate all candidates n = 3^a * m (m squarefree product of discovered primes whose minimal t ≤ a) with n ≤ LIMIT and verif
