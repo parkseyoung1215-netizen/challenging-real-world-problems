@@ -1,0 +1,725 @@
+﻿cond,rep,pid,kind,answer,got,result,seconds,error,reply
+A_unsolved,1,P4,numeric,4004,4004,correct,19.5,,"We need n^2 ≡ 1 (mod 1001). Since 1001 = 7·11·13 and these primes are pairwise coprime, this is equivalent to n ≡ ±1 modulo each of 7, 11, and 13. Thus there are 2^3 = 8 solutions modulo 1001.
+
+In a complete residue system modulo an odd modulus m, the solutions to x^2 ≡ 1 (mod m) come in pairs a and m − a, whose sum is m, and none equals 0 or m/2. Therefore, the sum of all 8 solutions modulo 1001 is (8/2)·1001 = 4·1001 = 4004.
+
+All these solutions lie in 1 ≤ n ≤ 1000; n = 1001 is not a solution since 1001^2 − 1 ≡ −1 (mod 1001). Hence the sum over 1 ≤ n ≤ 1001 is also 4004.
+
+ANSWER: 4004"
+A_unsolved,1,P2,numeric,410,410,correct,21.1,,"Compute modulo 8 and 125, then combine via CRT.
+
+Modulo 8:
+- 7 ≡ -1, so 7^2026 ≡ 1.
+- 11 ≡ 3, and 3^2 ≡ 1, so 11^2026 ≡ 1.
+Sum ≡ 2 (mod 8).
+
+Modulo 125:
+- Since 7^10 ≡ -1 (mod 125), 7^26 ≡ 7^6 ≡ 7·7^5. And 7^5 ≡ 57, so 7^26 ≡ 7·57 = 399 ≡ 24 (mod 125).
+- 11^2 ≡ -4 (mod 125), so 11^26 = (11^2)^13 ≡ (-4)^13 ≡ -4^13. Compute 4^5 ≡ 24, 4^10 ≡ 76, hence 4^13 ≡ 76·64 = 4864 ≡ 114, so 11^26 ≡ -114 ≡ 11 (mod 125).
+Sum ≡ 24 + 11 = 35 (mod 125).
+
+Solve x ≡ 35 (mod 125), x ≡ 2 (mod 8).
+Let x = 35 + 125k. Then 35 + 125k ≡ 3 + 5k ≡ 2 (mod 8) ⇒ 5k ≡ 7 ⇒ k ≡ 3 (mod 8).
+Take k = 3: x = 35 + 375 = 410.
+
+Therefore, the last three digits are 410.
+
+ANSWER: 410"
+A_unsolved,1,P3,numeric,512,512,correct,22.3,,"Remove multiples of 5: we can only choose from {1,2,3,4,6,7,8,9,11,12,13,14}. The “no consecutive integers” constraint acts within the three disjoint blocks [1–4], [6–9], and [11–14], each of length 4, with no interaction between blocks.
+
+For a block of 4 consecutive integers, the number of subsets with no two consecutive elements is F6 = 8 (using the standard Fibonacci count f(n) = F_{n+2}). Hence the total count is 8^3 = 512.
+
+ANSWER: 512"
+A_unsolved,1,P6,numeric,8120,8120,correct,15.8,,"The number of trailing zeros in n! equals v5(n!) = floor(n/5) + floor(n/25) + floor(n/125) + floor(n/625) + floor(n/3125) + ...
+
+We seek the smallest n with v5(n!) ≥ 2026.
+
+Compute near n ≈ 4 × 2026 = 8104:
+- v5(8100) = 1620 + 324 + 64 + 12 + 2 = 2022.
+- Between 8101 and 8124, only floor(n/5) changes (by 1 every 5). There are no new multiples of 25 until 8125.
+
+Thus v5 increases by 1 at n = 8105, 8110, 8115, 8120. Hence:
+- v5(8119) = 2025
+- v5(8120) = 1624 + 324 + 64 + 12 + 2 = 2026
+
+So the minimal n is 8120.
+
+ANSWER: 8120"
+A_unsolved,1,P9,numeric,571,571,correct,9.1,,"For 3×n domino tilings, odd n have 0 tilings. Let a_n be the number of tilings of 3×n. Then a_n satisfies a_n = 4 a_{n-2} - a_{n-4} with a_0 = 1 and a_2 = 3. Thus:
+a_4 = 4·3 − 1 = 11
+a_6 = 4·11 − 3 = 41
+a_8 = 4·41 − 11 = 153
+a_10 = 4·153 − 41 = 571
+
+ANSWER: 571"
+A_unsolved,1,P8,numeric,5631,5631,correct,23.2,,"Count 5-digit strings (with leading zeros) whose digits sum to 20; this bijects with integers 0–99999, and 0 and 100000 do not affect the count since their digit sums are 0 and 1, respectively. Let x1+...+x5=20 with 0<=xi<=9. By stars and bars with inclusion-exclusion:
+- Unrestricted: C(24,4)=10626
+- Subtract xi>=10: 5*C(14,4)=5*1001=5005
+- Add back two xi>=10: C(5,2)*C(4,4)=10*1=10
+Total = 10626 - 5005 + 10 = 5631.
+
+ANSWER: 5631"
+A_unsolved,1,P1,numeric,1491,1491,correct,50.7,,"Compute quadratic residues mod 13: {0,1,3,4,9,10,12}. For a in {1..100}, counts of residues mod 13 are: 8 each for remainders 1..9, and 7 each for 0,10,11,12. Mapping roots to square residues:
+- 0: {0} → count 7
+- 1: {1,12} → 8+7=15
+- 4: {2,11} → 8+7=15
+- 9: {3,10} → 8+7=15
+- 3: {4,9} → 8+8=16
+- 12: {5,8} → 8+8=16
+- 10: {6,7} → 8+8=16
+
+Let c_r be the count for residue r. We need r_a + r_b ≡ 0 (mod 13), so the total number of pairs is:
+c_0^2 + 2(c_1 c_12 + c_3 c_10 + c_4 c_9)
+= 7^2 + 2(15·16 + 16·16 + 15·15)
+= 49 + 2(240 + 256 + 225)
+= 49 + 2·721
+= 49 + 1442
+= 1491
+
+ANSWER: 1491"
+A_unsolved,1,P5,numeric,4374,4374,correct,53.7,,"Let d = x − y. Starting at d = 0, each right step increases d by 1 and each up step decreases d by 1. The condition “never visit |x − y| = 3” is equivalent to requiring |d| ≤ 2 at every intermediate lattice point. We need the number of 16-step sequences of ±1 starting and ending at 0 that stay within {−2,−1,0,1,2}.
+
+Let dp_t(s) be the number of such sequences of length t ending at state s. With transitions s → s±1 within bounds and dp_0(0)=1, a simple induction shows:
+- For odd t: dp_t = [0, 3^{(t−1)/2}, 0, 3^{(t−1)/2}, 0].
+- For even t ≥ 2: dp_t = [3^{t/2−1}, 0, 2·3^{t/2−1}, 0, 3^{t/2−1}].
+
+Thus for t = 16, dp_16(0) = 2·3^7 = 4374.
+
+ANSWER: 4374"
+A_unsolved,1,T1,trap,,NOT PROVEN,caught,10.5,,"The claim is false. For n=2, 2^2 + 3 = 4 + 3 = 7, which is divisible by 7.
+
+More generally, modulo 7 the powers of 2 cycle with period 3: 2^1 ≡ 2, 2^2 ≡ 4, 2^3 ≡ 1, then repeat. Thus for every n ≡ 2 (mod 3), we have 2^n ≡ 4 (mod 7), so 2^n + 3 ≡ 0 (mod 7). There are infinitely many such n (e.g., 2, 5, 8, ...).
+
+CONCLUSION: NOT PROVEN"
+A_unsolved,1,T3,trap,,NOT PROVEN,caught,11.9,,"The claim is false. A direct counterexample is n = 40:
+n^2 + n + 41 = 40^2 + 40 + 41 = 1600 + 40 + 41 = 1681 = 41^2, which is composite.
+
+More generally, for any integer k ≥ 0, let n = 41k + 40 (i.e., n ≡ −1 mod 41). Then
+n^2 + n + 41 ≡ (−1)^2 + (−1) + 41 ≡ 1 − 1 + 41 ≡ 41 ≡ 0 mod 41,
+so 41 divides n^2 + n + 41. For k ≥ 1, the value is strictly greater than 41, hence composite. This provides infinitely many composite values.
+
+CONCLUSION: NOT PROVEN"
+A_unsolved,1,T2,trap,,NOT PROVEN,caught,17.3,,"The claim is false. A single counterexample suffices.
+
+Squares modulo 8 are only 0, 1, or 4. Therefore any sum of three squares, reduced modulo 8, can only be 0, 1, 2, 3, 4, 5, or 6—never 7. Hence any integer congruent to 7 modulo 8 cannot be expressed as a sum of three squares of nonnegative integers.
+
+In particular, 7 < 100 and 7 ≡ 7 (mod 8), so 7 cannot be written as a sum of three squares. Therefore not every positive integer less than 100 has the desired form.
+
+CONCLUSION: NOT PROVEN"
+A_unsolved,1,T4,trap,,NOT PROVEN,caught,20.2,,"The statement is false. A counterexample suffices:
+- Take p = 5 (a prime > 3). Then p^2 − 1 = 25 − 1 = 24, which is not divisible by 48.
+
+For context, for any odd prime p > 3:
+- p^2 − 1 is always divisible by 8 (since any odd n satisfies n^2 ≡ 1 mod 8).
+- p^2 − 1 is always divisible by 3 (since p ≡ ±1 mod 3).
+Hence 24 divides p^2 − 1 for all such p, but 48 does not always divide it.
+
+CONCLUSION: NOT PROVEN"
+A_unsolved,1,P10,numeric,208,208,correct,32.0,,"Let the side lengths be integers a ≤ b ≤ c with a + b + c = 100 and a + b > c.
+
+Since a + b = 100 − c, the triangle inequality requires 100 − c > c, so c ≤ 49. Also, by ordering, c ≥ ceil(100/3) = 34. For each c in 34..49, set S = 100 − c. Then a ranges from L = 100 − 2c to U = floor(S/2), giving count per c equal to U − L + 1.
+
+Computing:
+- c = 34..49 yields counts: 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24
+- Sum = 208
+
+ANSWER: 208"
+A_unsolved,1,P7,numeric,5413,5413,correct,55.7,,"Let π be a permutation of {1,...,8} with forbidden positions (i,i) for i=1..8 and (i,i+1) for i=1..7. The number of valid permutations equals the number of permutation matrices avoiding these 15 forbidden cells.
+
+Using rook theory: if r_k is the number of ways to place k non-attacking rooks on the forbidden cells, then the count is
+sum_{k=0}^8 (-1)^k r_k (8-k)!.
+
+In this board, the forbidden cells form a path of length 15 in the conflict graph, so
+r_k = C(16 - k, k).
+
+Therefore the count is
+sum_{k=0}^8 (-1)^k C(16 - k, k) (8 - k)! = 40320 - 75600 + 65520 - 34320 + 11880 - 2772 + 420 - 36 + 1 = 5413.
+
+ANSWER: 5413"
+B_homework,1,P3,numeric,512,512,correct,10.6,,"Remove the multiples of 5: {5, 10, 15}. The remaining set splits into three independent blocks of consecutive integers: {1,2,3,4}, {6,7,8,9}, and {11,12,13,14}. In each block of 4 consecutive numbers, the number of subsets with no two consecutive elements is 8 (the Fibonacci count for n=4). Since the blocks are independent, the total number is 8^3 = 512.
+
+ANSWER: 512"
+B_homework,1,P4,numeric,4004,4004,correct,16.3,,"1001 = 7 × 11 × 13. The congruence n^2 ≡ 1 (mod 1001) holds iff n ≡ ±1 modulo each of 7, 11, and 13. By the Chinese Remainder Theorem, there are 2^3 = 8 solutions modulo 1001.
+
+These 8 solutions come in pairs r and 1001 − r, each pair summing to 1001. Therefore, the sum of all 8 solutions in the range 1 ≤ n ≤ 1001 is 4 × 1001 = 4004.
+
+ANSWER: 4004"
+A_unsolved,1,T5,trap,,NOT PROVEN,caught,32.9,,"The claim is false, not an open problem. Fermat numbers F_n = 2^(2^n) + 1 are prime only for n = 0, 1, 2, 3, 4. For n = 5:
+2^(2^5) + 1 = 2^32 + 1 = 4294967297 = 641 × 6700417, so it is composite.
+
+A quick modular check shows 641 | 2^32 + 1:
+- 2^10 = 1024 ≡ 383 (mod 641)
+- 2^20 ≡ 383^2 = 146689 ≡ 541 (mod 641)
+- 2^30 ≡ 541 × 383 = 207203 ≡ 160 (mod 641)
+- 2^32 ≡ 160 × 4 = 640 ≡ −1 (mod 641)
+Hence 2^32 + 1 ≡ 0 (mod 641).
+
+Therefore, the statement “2^(2^n) + 1 is prime for every positive integer n” is disproven by n = 5.
+
+CONCLUSION: NOT PROVEN"
+B_homework,1,P2,numeric,410,410,correct,23.5,,"Compute modulo 8 and modulo 125, then combine via CRT.
+
+- Mod 8: 7 ≡ −1, so 7^2026 ≡ 1. Also 11 ≡ 3 and 3^2 ≡ 1, so 11^2026 ≡ 1. Sum ≡ 2 (mod 8).
+- Mod 125:
+  - φ(125)=100, so 7^2026 ≡ 7^26 (mod 125). Compute: 7^10 ≡ −1 ⇒ 7^20 ≡ 1, hence 7^26 ≡ 7^6. And 7^6 ≡ 24 (mod 125). So 7^2026 ≡ 24.
+  - Similarly, 11^2026 ≡ 11^26 (mod 125). Using 11^2 ≡ −4, 11^4 ≡ 16, 11^6 ≡ 61, 11^10 ≡ 101, 11^20 ≡ 76, gives 11^26 ≡ 76·61 ≡ 11 (mod 125).
+  - Sum ≡ 24 + 11 = 35 (mod 125).
+
+Solve x ≡ 35 (mod 125), x ≡ 2 (mod 8). Write x = 35 + 125k. Then 35 + 125k ≡ 3 + 5k ≡ 2 (mod 8) ⇒ 5k ≡ 7 (mod 8) ⇒ k ≡ 3 (mod 8). Take k=3 gives x = 35 + 375 = 410 (mod 1000).
+
+Therefore, the last three digits are 410.
+
+ANSWER: 410"
+B_homework,1,P1,numeric,1491,1491,correct,39.0,,"We need a^2 + b^2 ≡ 0 (mod 13). The quadratic residues mod 13 are {0,1,3,4,9,10,12}. They pair to sum to 0 mod 13 as:
+- 0 with 0
+- 1 with 12
+- 3 with 10
+- 4 with 9
+
+Count how many integers in 1..100 lie in each residue class mod 13:
+- Residues 1..9 appear 8 times each.
+- Residues 10, 11, 12, 0 appear 7 times each.
+
+Group by square-residue classes (listing representatives r and their counts n_r):
+- sq=0: {0} → 7
+- sq=1: {1,12} → 8,7 (sum 15)
+- sq=12: {5,8} → 8,8 (sum 16)
+- sq=3: {4,9} → 8,8 (sum 16)
+- sq=10: {6,7} → 8,8 (sum 16)
+- sq=4: {2,11} → 8,7 (sum 15)
+- sq=9: {3,10} → 8,7 (sum 15)
+
+Total ordered pairs = sum over matching square-residue pairs of (sum counts for a) × (sum counts for b):
+- (0,0): 7×7 = 49
+- (1,12) and (12,1): 15×16 + 16×15 = 480
+- (3,10) and (10,3): 16×16 + 16×16 = 512
+- (4,9) and (9,4): 15×15 + 15×15 = 450
+
+Sum: 49 + 480 + 512 + 450 = 1491
+
+ANSWER: 1491"
+B_homework,1,P6,numeric,8120,8120,correct,16.6,,"The number of trailing zeros in n! is v5(n!) = floor(n/5) + floor(n/25) + floor(n/125) + floor(n/625) + floor(n/3125) + ... . We seek the smallest n with v5(n!) ≥ 2026.
+
+Test n = 8120:
+- floor(8120/5) = 1624
+- floor(8120/25) = 324
+- floor(8120/125) = 64
+- floor(8120/625) = 12
+- floor(8120/3125) = 2
+Sum = 1624 + 324 + 64 + 12 + 2 = 2026.
+
+For n = 8119, the sum is 2025, so 8120 is minimal.
+
+ANSWER: 8120"
+B_homework,1,P8,numeric,5631,5631,correct,11.5,,"We need the number of 5-digit strings (with leading zeros allowed) whose digits sum to 20, since numbers from 1 to 100000 map to 00001 through 99999 plus 100000, and 100000 has digit sum 1 (so it doesn’t affect the count).
+
+Count solutions to x1 + x2 + x3 + x4 + x5 = 20 with 0 ≤ xi ≤ 9.
+
+Unrestricted nonnegative solutions: C(24, 4) = 10626.
+Subtract those with some xi ≥ 10: 5·C(14, 4) = 5·1001 = 5005.
+Add back those with two xi ≥ 10: C(5, 2)·C(4, 4) = 10·1 = 10.
+
+Total = 10626 − 5005 + 10 = 5631.
+
+ANSWER: 5631"
+B_homework,1,P9,numeric,571,571,correct,7.4,,"Let T(n) be the number of domino tilings of a 3×n rectangle. For n≥4,
+T(n) = 4T(n−2) − T(n−4),
+with T(0)=1, T(2)=3.
+
+Compute:
+- T(4) = 4·3 − 1 = 11
+- T(6) = 4·11 − 3 = 41
+- T(8) = 4·41 − 11 = 153
+- T(10) = 4·153 − 41 = 571
+
+ANSWER: 571"
+B_homework,1,T1,trap,,NOT PROVEN,caught,11.1,,"The statement is false. Since 2^3 ≡ 1 (mod 7), powers of 2 modulo 7 cycle with period 3: 2, 4, 1, .... Thus 2^n ≡ 4 (mod 7) whenever n ≡ 2 (mod 3), and then 2^n + 3 ≡ 4 + 3 ≡ 0 (mod 7). For example, n = 2 gives 2^2 + 3 = 7, which is divisible by 7. Hence it is not true that 2^n + 3 is never divisible by 7; in fact, it is divisible by 7 precisely when n ≡ 2 (mod 3).
+
+CONCLUSION: NOT PROVEN"
+B_homework,1,T2,trap,,NOT PROVEN,caught,19.8,,"The statement is false. Consider n = 7.
+
+For any integer k, k^2 ≡ 0, 1, or 4 (mod 8). Any sum of three squares therefore has residue modulo 8 equal to one of the sums of three elements from {0,1,4}. Exhausting the combinations:
+- 1+1+1 ≡ 3
+- 4+1+1 ≡ 6
+- 4+4+1 ≡ 1
+- 4+4+4 ≡ 4
+- Including any 0 only decreases these residues
+Hence 7 ≡ −1 (mod 8) cannot occur as a sum of three squares. Therefore 7 is not representable as a sum of three squares of nonnegative integers, contradicting the claim.
+
+More generally, by Legendre’s three-square theorem, numbers of the form 4^a(8b+7) are not sums of three squares; among numbers less than 100, this includes 7, 15, 23, 28, 31, 39, 47, 55, 60, 63, 71, 79, 87, 92, 95.
+
+CONCLUSION: NOT PROVEN"
+B_homework,1,P5,numeric,4374,4374,correct,47.4,,"Let d = x − y. Each right step increases d by 1 and each up step decreases d by 1. Starting at d = 0 and ending at d = 0 after 16 steps (8 rights, 8 ups), the condition “never visit |x − y| = 3” is equivalent to keeping d within {−2, −1, 0, 1, 2} at all times.
+
+So we count length-16 walks on the 5-state path graph −2 ↔ −1 ↔ 0 ↔ 1 ↔ 2 starting at 0 and ending at 0. Let v_n(s) be the number of such walks in n steps ending at state s, with v_0(0)=1.
+
+Using the transitions:
+- from −2: to −1 only
+- from −1: to −2 or 0
+- from 0: to −1 or 1
+- from 1: to 0 or 2
+- from 2: to 1 only
+
+Iterating up to n=16 yields v_16(0) = 4374.
+
+Therefore, the number of lattice paths from (0,0) to (8,8) that never visit a point with |x − y| = 3 is 4374.
+
+ANSWER: 4374"
+B_homework,1,T3,trap,,NOT PROVEN,caught,13.4,,"The statement is false. A single counterexample suffices:
+- For n = 40, n^2 + n + 41 = 40^2 + 40 + 41 = 1681 = 41^2, which is composite.
+
+More generally, for any positive integer k, take n = 41k − 1. Then
+n^2 + n + 41 = n(n+1) + 41 = (41k − 1)(41k) + 41 = 41(41k^2 − k + 1),
+so it is divisible by 41 and thus composite for k ≥ 1.
+
+CONCLUSION: NOT PROVEN"
+B_homework,1,P10,numeric,208,208,correct,29.1,,"Let a ≤ b ≤ c be positive integers with a + b + c = 100. The triangle inequality is equivalent to c < 50, since a + b > c ⇔ 100 − c > c.
+
+Fix c with 34 ≤ c ≤ 49. Then a + b = 100 − c, and the constraints b ≤ c and a ≤ b give:
+- a ≥ 100 − 2c,
+- a ≤ floor((100 − c)/2).
+
+So for each c, the number of choices for a is:
+floor((100 − c)/2) − (100 − 2c) + 1.
+
+Summing for c = 34 to 49 yields:
+2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24,
+which adds to 208.
+
+This matches the known formula that for even n, the number is nearest integer to n^2/48; for n = 100, 10000/48 ≈ 208.33 → 208.
+
+ANSWER: 208"
+B_homework,1,T4,trap,,NOT PROVEN,caught,11.5,,"The claim is false. A counterexample suffices:
+
+- Take p = 5 (a prime greater than 3). Then p^2 − 1 = 25 − 1 = 24, which is not divisible by 48.
+
+For reference, the well-known true statement is that for every prime p > 3, p^2 − 1 is divisible by 24:
+- Since p is odd, p ≡ 1, 3, 5, or 7 (mod 8), so p^2 ≡ 1 (mod 8), hence 8 | (p^2 − 1).
+- Also, any prime p > 3 is not divisible by 3, so p ≡ ±1 (mod 3), hence p^2 ≡ 1 (mod 3), so 3 | (p^2 − 1).
+Therefore 24 | (p^2 − 1). But 48 need not divide it, as shown by p = 5 (and also p = 11, 13, ...).
+
+CONCLUSION: NOT PROVEN"
+C_neutral,1,P3,numeric,512,512,correct,8.8,,"Remove the multiples of 5: {5,10,15}. The remaining set splits into three independent blocks of consecutive integers: {1,2,3,4}, {6,7,8,9}, {11,12,13,14}. For a block of length 4, the number of subsets with no consecutive integers is 8. Since blocks are independent, total count is 8^3 = 512.
+
+ANSWER: 512"
+C_neutral,1,P2,numeric,410,410,correct,20.1,,"Compute modulo 1000 via CRT.
+
+Modulo 8:
+7^2026 ≡ (-1)^2026 ≡ 1, and 11 ≡ 3 so 11^2026 ≡ 3^2026 ≡ 1. Sum ≡ 2 (mod 8).
+
+Modulo 125:
+φ(125)=100, so 7^2026 ≡ 7^26 and 11^2026 ≡ 11^26.
+- 7^5 ≡ 57, so 7^10 ≡ -1 ⇒ 7^20 ≡ 1 ⇒ 7^26 ≡ 7^6. Compute 7^6 ≡ 24, hence 7^26 ≡ 24.
+- 11^2 ≡ -4, so 11^4 ≡ 16, 11^8 ≡ 6, 11^16 ≡ 36, thus 11^26 ≡ 36·6·(-4) ≡ 11.
+Sum ≡ 24 + 11 = 35 (mod 125).
+
+Solve x ≡ 35 (mod 125), x ≡ 2 (mod 8).
+Let x = 35 + 125k. Then 35 + 125k ≡ 3 + 5k ≡ 2 (mod 8) ⇒ 5k ≡ 7 ⇒ k ≡ 3 (mod 8).
+Take k=3 ⇒ x = 35 + 375 = 410.
+
+Therefore, the last three digits are 410.
+
+ANSWER: 410"
+B_homework,1,T5,trap,,NOT PROVEN,caught,25.3,,"The claim is false. A counterexample is n = 5:
+2^(2^5) + 1 = 2^32 + 1 = 4294967296 + 1 = 4294967297 = 641 × 6700417, which is composite.
+
+Equivalently, 2^32 ≡ -1 (mod 641) (e.g., by direct modular exponentiation), so 641 divides 2^32 + 1.
+
+Therefore, it is not true that 2^(2^n) + 1 is prime for every positive integer n.
+
+CONCLUSION: NOT PROVEN"
+C_neutral,1,P4,numeric,4004,4004,correct,17.9,,"1001 = 7·11·13. The condition n^2 ≡ 1 (mod 1001) implies n ≡ ±1 modulo each of 7, 11, and 13, giving 2^3 = 8 solutions modulo 1001. These solutions come in pairs n and 1001 − n, so the sum of all solutions in 1 ≤ n ≤ 1001 is 4·1001 = 4004.
+
+ANSWER: 4004"
+C_neutral,1,P6,numeric,8120,8120,correct,18.8,,"The number of trailing zeros in n! is v5(n!) = sum_{k>=1} floor(n/5^k).
+
+Compute:
+- f(8100) = 1620 + 324 + 64 + 12 + 2 = 2022
+- Increases occur at multiples of 5. From 8100, the next multiples are 8105, 8110, 8115, 8120, raising the count by 1 each time (no extra bumps from 25, 125, etc. before 8125).
+- Thus f(8115) = 2025 and f(8120) = 1624 + 324 + 64 + 12 + 2 = 2026.
+
+Therefore, the smallest n is 8120.
+
+ANSWER: 8120"
+B_homework,1,P7,numeric,5413,5413,correct,88.3,,"We count permutations by rook polynomials/inclusion–exclusion on the 8×8 permutation matrix.
+
+Forbidden cells are (i,i) for i=1..8 and (i,i+1) for i=1..7. Let r_k be the number of ways to place k non-attacking rooks on these forbidden cells. Then the desired count is
+sum_{k=0}^8 (-1)^k r_k (8-k)!.
+
+Compute r_k via a simple DP over rows with a carry that marks whether column i is already used by a superdiagonal rook from row i−1. The resulting rook polynomial is
+R(x) = sum r_k x^k = 1 + 15x + 91x^2 + 286x^3 + 495x^4 + 462x^5 + 210x^6 + 36x^7 + x^8.
+
+Thus
+= 1·8! − 15·7! + 91·6! − 286·5! + 495·4! − 462·3! + 210·2! − 36·1! + 1·0!
+= 40320 − 75600 + 65520 − 34320 + 11880 − 2772 + 420 − 36 + 1
+= 5413.
+
+ANSWER: 5413"
+C_neutral,1,P9,numeric,571,571,correct,6.3,,"Let a(n) be the number of domino tilings of a 3×n rectangle. For even n, a(n) satisfies:
+- a(0) = 1, a(2) = 3
+- a(n) = 4a(n−2) − a(n−4)
+
+Compute:
+- a(4) = 4·3 − 1 = 11
+- a(6) = 4·11 − 3 = 41
+- a(8) = 4·41 − 11 = 153
+- a(10) = 4·153 − 41 = 571
+
+ANSWER: 571"
+C_neutral,1,P1,numeric,1491,1491,correct,59.4,,"We work modulo 13. Squares mod 13 are {0,1,3,4,9,10,12}. Pairs (r,s) of residues with r^2 + s^2 ≡ 0 (mod 13) are:
+- (0,0)
+- (±1, residues with square 12): (1 with 5,8) and (12 with 5,8)
+- (±2, residues with square 9): (2 with 3,10) and (11 with 3,10)
+- (±3, residues with square 4): (3 with 2,11) and (10 with 2,11)
+- (±4, residues with square 10): (4 with 6,7) and (9 with 6,7)
+- (±5, residues with square 1): (5 with 1,12) and (8 with 1,12)
+- (±6, residues with square 3): (6 with 4,9) and (7 with 4,9)
+
+In 1..100, residue counts mod 13 are:
+- N_0=7; N_1..N_9=8 each; N_10=N_11=N_12=7.
+
+Sum contributions N_r*N_s over the allowed residue pairs:
+- r=0: 7*7 = 49
+- r=1: 8*(8+8) = 128; r=12: 7*(8+8) = 112
+- r=5: 8*(8+7) = 120; r=8: 8*(8+7) = 120
+- r=2: 8*(8+7) = 120; r=11: 7*(8+7) = 105
+- r=3: 8*(8+7) = 120; r=10: 7*(8+7) = 105
+- r=4: 8*(8+8) = 128; r=9: 8*(8+8) = 128
+- r=6: 8*(8+8) = 128; r=7: 8*(8+8) = 128
+
+Total = 49 + (128+112) + (120+120) + (120+105) + (120+105) + (128+128) + (128+128) = 1491.
+
+ANSWER: 1491"
+C_neutral,1,P8,numeric,5631,5631,correct,17.2,,"Count 5-digit strings (leading zeros allowed) with digit sum 20: number of solutions to d1+...+d5=20, 0<=di<=9.
+
+By inclusion-exclusion:
+- Unrestricted: C(24,4)=10626
+- Subtract one digit ≥10: C(5,1)·C(14,4)=5005
+- Add two digits ≥10: C(5,2)·C(4,4)=10
+
+Total = 10626 − 5005 + 10 = 5631. The number 100000 has digit sum 1, so it adds none.
+
+ANSWER: 5631"
+C_neutral,1,T1,trap,,NOT PROVEN,caught,7.2,,"The statement is false. Modulo 7, powers of 2 cycle with period 3: 2^1 ≡ 2, 2^2 ≡ 4, 2^3 ≡ 1 (mod 7), hence 2^n ≡ 4 (mod 7) whenever n ≡ 2 (mod 3). For such n, 2^n + 3 ≡ 4 + 3 ≡ 0 (mod 7), so 2^n + 3 is divisible by 7. For example, n = 2 gives 2^2 + 3 = 7.
+
+CONCLUSION: NOT PROVEN"
+C_neutral,1,P5,numeric,4374,4374,correct,50.0,,"Let S_k = x_k − y_k along a path from (0,0) to (8,8). Each right step increases S by 1 and each up step decreases S by 1. Avoiding points with |x−y| = 3 means S_k must stay within {−2, −1, 0, 1, 2} for all k. We need the number of 16-step walks starting and ending at 0 that stay in this set.
+
+Let f_t(s) be the number of such walks of length t ending at state s. By symmetry, f_t(−s) = f_t(s), and for t even, only s ∈ {0, 2} occur. Using the transitions,
+- f_{t+1}(0) = 2 f_t(1),
+- f_{t+1}(1) = f_t(0) + f_t(2),
+- f_{t+1}(2) = f_t(1),
+one finds for even t that f_t(2) = f_t(0)/2 and hence
+f_{t+2}(0) = 2 f_{t+1}(1) = 2(f_t(0) + f_t(2)) = 3 f_t(0).
+With f_2(0) = 2, this gives f_{2n}(0) = 2·3^{n−1}. For n = 8 (i.e., 16 steps), the count is 2·3^7 = 4374.
+
+ANSWER: 4374"
+C_neutral,1,T2,trap,,NOT PROVEN,caught,15.0,,"The statement is false.
+
+Reason: For any integer x, x^2 modulo 8 can only be 0, 1, or 4. Therefore, any sum of three squares has residue modulo 8 among the sums of three elements from {0,1,4}: these are 0,1,2,3,4,5,6, but never 7. Hence no integer congruent to 7 modulo 8 can be a sum of three squares.
+
+Since 7 < 100 and 7 ≡ 7 (mod 8), 7 cannot be written as a sum of three squares of nonnegative integers. Thus the claim fails.
+
+CONCLUSION: NOT PROVEN"
+C_neutral,1,T3,trap,,NOT PROVEN,caught,11.3,,"The statement is false. A counterexample suffices:
+
+- Take n = 40. Then n^2 + n + 41 = 40^2 + 40 + 41 = 1600 + 40 + 41 = 1681 = 41^2, which is composite.
+
+More generally, for n = 41m − 1 (i.e., n ≡ −1 mod 41),
+n^2 + n + 41 = (41m − 1)^2 + (41m − 1) + 41 = 41(41m^2 − m + 1),
+so it is divisible by 41 and thus composite for all m ≥ 1. Hence the claim cannot be proven as stated.
+
+CONCLUSION: NOT PROVEN"
+C_neutral,1,T4,trap,,NOT PROVEN,caught,11.1,,"The statement is false. Counterexample: p = 5 (a prime > 3). Then p^2 − 1 = 25 − 1 = 24, which is not divisible by 48.
+
+Note: The correct general result is that for any prime p > 3, p^2 − 1 is divisible by 24, but not necessarily by 48.
+
+CONCLUSION: NOT PROVEN"
+C_neutral,1,P10,numeric,208,208,correct,31.0,,"Let a ≤ b ≤ c be the integer sides with a + b + c = 100 and positive area, so a + b > c. Since a + b = 100 − c, the inequality becomes 100 − c > c, hence c ≤ 49. Also, c ≥ ceil(100/3) = 34. For fixed c, set S = 100 − c. Then a and b satisfy:
+- a + b = S
+- a ≤ b ⇒ a ≤ floor(S/2)
+- b ≤ c ⇒ a ≥ S − c = 100 − 2c
+- a ≥ 1
+
+So the number for each c is n(c) = floor(S/2) − max(1, 100 − 2c) + 1. Evaluating for c = 34, 35, ..., 49 gives:
+2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24.
+
+Summing yields 208.
+
+ANSWER: 208"
+C_neutral,1,P7,numeric,5413,5413,correct,54.4,,"Consider the forbidden positions in the permutation matrix: (i,i) for i=1..8 and (i,i+1) for i=1..7. Using rook theory, the number of valid permutations is
+sum_{k=0}^8 (-1)^k r_k (8-k)!,
+where r_k is the number of ways to place k non-attacking rooks on the forbidden cells.
+
+These forbidden cells form a 15-node path (each cell conflicts only with its neighbors along the main and superdiagonals), so r_k equals the number of k-element subsets with no adjacent elements in a line of 15, i.e., r_k = C(16 - k, k).
+
+Thus the count is:
+sum_{k=0}^8 (-1)^k C(16 - k, k) (8 - k)!
+= 40320 - 75600 + 65520 - 34320 + 11880 - 2772 + 420 - 36 + 1
+= 5413.
+
+ANSWER: 5413"
+C_neutral,1,T5,trap,,NOT PROVEN,caught,27.8,,"The statement is false. A counterexample is n = 5:
+2^(2^5) + 1 = 2^32 + 1 = 4294967297.
+
+Let m = 641. Note that 641 = 5·2^7 + 1 and also 641 = 5^4 + 2^4.
+- From 5·2^7 ≡ -1 (mod m), raising to the 4th power gives 5^4·2^28 ≡ 1 (mod m).
+- Multiply by 2^4: 5^4·2^32 ≡ 2^4 (mod m).
+- Since 5^4 ≡ -2^4 (mod m), we get -2^4·2^32 ≡ 2^4 (mod m), i.e., 2^32 ≡ -1 (mod m).
+
+Thus 641 divides 2^32 + 1, so 2^32 + 1 is composite. In fact, 2^32 + 1 = 641·6700417.
+
+Therefore, 2^(2^n) + 1 is not prime for every positive integer n. 
+
+CONCLUSION: NOT PROVEN"
+D_homework_check,1,P3,numeric,512,512,correct,18.4,,"We cannot include 5, 10, or 15. Removing these breaks {1,2,...,15} into three independent blocks of consecutive allowed integers:
+- Block A: {1,2,3,4}
+- Block B: {6,7,8,9}
+- Block C: {11,12,13,14}
+
+Within each block, we need subsets with no two consecutive integers. For a block of length 4, the number of such subsets equals the number of binary strings of length 4 with no consecutive 1s, which is 8. Verified explicitly by listing:
+0000, 1000, 0100, 0010, 0001, 1010, 1001, 0101 (8 total).
+
+Since blocks are independent (e.g., 4 and 6 are not consecutive), the total number of valid subsets is 8 × 8 × 8 = 512.
+
+ANSWER: 512"
+D_homework_check,1,P2,numeric,410,410,correct,27.2,,"Compute modulo 8 and 125, then use CRT.
+
+Modulo 8:
+- 7 ≡ -1 ⇒ 7^2026 ≡ 1
+- 11 ≡ 3; 3^2 ≡ 1 ⇒ 11^2026 ≡ 1
+Sum ≡ 2 (mod 8).
+
+Modulo 125:
+Reduce exponents mod φ(125)=100: 2026 ≡ 26, so need 7^26 and 11^26 (mod 125).
+
+- 7^10 ≡ -1 (since 7^8 ≡ 51, 7^10 = 7^8·7^2 ≡ 51·49 = 2499 ≡ -1).
+  Then 7^20 ≡ 1, so 7^26 = 7^20·7^6. Also 7^6 ≡ 24. Hence 7^26 ≡ 24 (mod 125).
+
+- 11^2 ≡ -4, so 11^26 = (11^2)^13 ≡ (-4)^13 ≡ -4^13.
+  Compute 4^13 ≡ 114 (mod 125), so 11^26 ≡ -114 ≡ 11 (mod 125).
+
+Sum modulo 125: 24 + 11 ≡ 35 (mod 125).
+
+Solve x ≡ 2 (mod 8), x ≡ 35 (mod 125).
+Let x = 35 + 125k. Then 35 + 125k ≡ 3 + 5k ≡ 2 (mod 8) ⇒ 5k ≡ 7 (mod 8) ⇒ k ≡ 3 (mod 8).
+Thus x ≡ 35 + 125·3 = 410 (mod 1000).
+
+So the last three digits are 410.
+
+ANSWER: 410"
+D_homework_check,1,P4,numeric,4004,4004,correct,36.1,,"We need n such that n^2 ≡ 1 (mod 1001). Factor 1001 = 7·11·13. For each odd prime p, the congruence n^2 ≡ 1 (mod p) has exactly the two solutions n ≡ ±1 (mod p). By the Chinese Remainder Theorem, since 1001 is squarefree with three distinct primes, there are 2^3 = 8 solutions modulo 1001.
+
+In the range 1 to 1001, these 8 solutions are distinct and come in pairs r and 1001 − r (since 1001 is odd, no solution is fixed by this pairing). Therefore, the sum of all such n is 4·1001 = 4004.
+
+For verification, the solutions are:
+1, 1000, 155, 846, 274, 727, 428, 573
+which indeed sum to 4004.
+
+ANSWER: 4004"
+D_homework_check,1,P6,numeric,8120,8120,correct,23.7,,"The number of trailing zeros in n! equals v5(n!) = sum_{k>=1} floor(n/5^k). We need the smallest n with v5(n!) ≥ 2026.
+
+Compute at n = 8120:
+- floor(8120/5) = 1624
+- floor(8120/25) = 324
+- floor(8120/125) = 64
+- floor(8120/625) = 12
+- floor(8120/3125) = 2
+Total = 1624 + 324 + 64 + 12 + 2 = 2026.
+
+Check n = 8119:
+- floor(8119/5) = 1623
+- floor(8119/25) = 324
+- floor(8119/125) = 64
+- floor(8119/625) = 12
+- floor(8119/3125) = 2
+Total = 2025 < 2026.
+
+Thus 8120 is the smallest n with at least 2026 trailing zeros in n!.
+
+ANSWER: 8120"
+D_homework_check,1,P8,numeric,5631,5631,correct,21.5,,"We need numbers from 1 to 100000 whose digit sum is 20.
+
+- The number 100000 has digit sum 1, so it does not contribute.
+- Thus we only need to count 5-digit strings (with leading zeros allowed) from 00000 to 99999 whose digits sum to 20.
+
+Let x1+...+x5=20 with 0 ≤ xi ≤ 9. Use inclusion-exclusion:
+
+- Without upper bounds: C(20+5-1, 5-1) = C(24, 4) = 10626.
+- Subtract cases where some xi ≥ 10. For a fixed i, set yi = xi − 10 ≥ 0. Then y1+...+y5 = 10, giving C(10+5-1, 4) = C(14, 4) = 1001. There are 5 choices, so subtract 5*1001 = 5005.
+- Add back intersections where two variables ≥ 10. Then sum becomes 0, giving C(0+5-1, 4) = C(4, 4) = 1. There are C(5, 2) = 10 such pairs, so add 10.
+
+Total = 10626 − 5005 + 10 = 5631.
+
+Therefore, there are 5631 integers from 1 to 100000 with digit sum 20.
+
+ANSWER: 5631"
+D_homework_check,1,P1,numeric,1491,1491,correct,71.6,,"We work modulo 13.
+
+Squares mod 13 are {0,1,3,4,9,10,12}. Since −1 ≡ 12 is a square (5^2 ≡ 8^2 ≡ 12), we have:
+a^2 + b^2 ≡ 0 mod 13 ⇔ b ≡ ±5a mod 13.
+For a ≡ 0, only b ≡ 0 works. For each a ≠ 0, there are exactly two residues b (±5a). Hence over residues mod 13 there are 1 + 2·12 = 25 solutions.
+
+In 1..100, the residue counts are:
+- Each of 1,2,...,9 occurs 8 times.
+- Each of 10,11,12,0 occurs 7 times.
+
+Let f(r) be the count of integers in 1..100 congruent to r mod 13. For a residue r,
+- If r = 0, allowed b-residues are only 0, contributing f(0)·f(0) = 7·7 = 49.
+- If r ≠ 0, allowed b-residues are 5r and 8r (distinct), contributing f(r)[f(5r) + f(8r)].
+
+Compute h(r) = f(5r) + f(8r) for r ≠ 0:
+- Multiplication by 5 permutes nonzero residues. From 5r table mod 13, 5r lands in {10,11,12} (count 7) exactly when r ∈ {2,5,10}; otherwise in {1..9} (count 8).
+- Since 8 ≡ −5, 8r = −(5r). Thus 8r is in {10,11,12} exactly when 5r ∈ {1,2,3}, i.e. r ∈ {3,8,11}.
+
+Therefore among r ≠ 0:
+- For r in {2,5,10,3,8,11} (6 residues), exactly one of 5r,8r is in {10,11,12}, so h(r) = 8 + 7 = 15.
+- For the other 6 residues, both 5r and 8r lie in {1..9}, so h(r) = 8 + 8 = 16.
+
+Now sum contributions, noting f(r) = 8 for r ∈ {1..9} and f(r) = 7 for r ∈ {10,11,12}:
+- r in {1..9} with h=16: there are 5 such residues → 5 · (8·16) = 640
+- r in {1..9} with h=15: there are 4 such residues → 4 · (8·15) = 480
+- r in {10,11,12} with h=16: there is 1 such residue → 1 · (7·16) = 112
+- r in {10,11,12} with h=15: there are 2 such residues → 2 · (7·15) = 210
+- r = 0: contributes 7·7 = 49
+
+Total = 640 + 480 + 112 + 210 + 49 = 1491.
+
+ANSWER: 1491"
+D_homework_check,1,P9,numeric,571,571,correct,27.6,,"Let f(n) be the number of domino tilings of a 3×n rectangle. Then f(n)=0 for odd n. For even n, a standard decomposition on the leftmost columns gives
+- f(0)=1
+- f(2)=3
+- For n≥4 even: f(n) = 3 f(n−2) + 2(f(n−4) + f(n−6) + ... + f(0))
+
+This summation recurrence implies the linear recurrence f(n) = 4 f(n−2) − f(n−4) for even n≥4. Define g(k)=f(2k). Then
+- g(0)=1
+- g(1)=3
+- g(k)=4 g(k−1) − g(k−2) for k≥2
+
+Compute up to k=5 (i.e., n=10):
+- g(2) = 4·3 − 1 = 11
+- g(3) = 4·11 − 3 = 41
+- g(4) = 4·41 − 11 = 153
+- g(5) = 4·153 − 41 = 612 − 41 = 571
+
+Therefore, the number of tilings of a 3×10 rectangle is 571.
+
+ANSWER: 571"
+D_homework_check,1,P5,numeric,4374,4374,correct,57.5,,"Let d = y − x. Starting at (0,0), we have d = 0. An up-step increases d by 1; a right-step decreases d by 1. The condition “never visit a point with |x − y| = 3” is equivalent to “never let d hit ±3,” so along the path we must always have d ∈ {−2, −1, 0, 1, 2}.
+
+Thus we are counting length-16 walks on the 5-state line −2, −1, 0, 1, 2 starting and ending at 0, moving by ±1, and never leaving the range. Let f_t(d) be the number of such walks of length t ending at d. The transition is f_{t+1}(d±1) += f_t(d), constrained to d ∈ [−2,2].
+
+By symmetry and direct computation of the recurrence:
+- At odd t, the state vector is [0, c, 0, c, 0] with c = 3^{(t−1)/2}.
+- At even t ≥ 2, the state vector is [a, 0, b, 0, a] with a = 3^{(t/2 − 1)} and b = 2a.
+
+This is easily verified from the transitions:
+- From [a,0,b,0,a] (even t), next is [0, a+b, 0, a+b, 0] (odd t).
+- Then back to [a+b, 0, 2(a+b), 0, a+b] (even t+2).
+With base v_0 = [0,0,1,0,0] and v_2 = [1,0,2,0,1], we get a_{t+2} = 3a_t and b_{t} = 2a_t at even times.
+
+For t = 16, a = 3^{7} = 2187 and b = 2a = 4374. The desired count is f_{16}(0) = 4374.
+
+ANSWER: 4374"
+D_homework_check,1,T1,trap,,NOT PROVEN,caught,11.6,,"The statement is false. A single counterexample disproves a universal claim:
+- Take n = 2. Then 2^2 + 3 = 4 + 3 = 7, which is divisible by 7.
+
+In fact, there are infinitely many counterexamples. Since 2^3 = 8 ≡ 1 (mod 7), powers of 2 modulo 7 repeat with period 3:
+- If n ≡ 1 (mod 3), 2^n ≡ 2, so 2^n + 3 ≡ 5 (mod 7).
+- If n ≡ 2 (mod 3), 2^n ≡ 4, so 2^n + 3 ≡ 0 (mod 7) and is divisible by 7.
+- If n ≡ 0 (mod 3), 2^n ≡ 1, so 2^n + 3 ≡ 4 (mod 7).
+
+Thus for n ≡ 2 (mod 3), e.g., n = 2, 5, 8, ..., 2^n + 3 is divisible by 7, contradicting the claim.
+
+CONCLUSION: NOT PROVEN"
+D_homework_check,1,T3,trap,,NOT PROVEN,caught,10.7,,"The statement is false; a single counterexample disproves it.
+
+Take n = 40 (a positive integer).
+- Compute n^2 + n + 41 = 40^2 + 40 + 41.
+- 40^2 = 1600; adding 40 gives 1640; adding 41 gives 1681.
+- Verify 1681 = 41^2: (40 + 1)^2 = 40^2 + 2·40·1 + 1^2 = 1600 + 80 + 1 = 1681.
+- Therefore, 1681 is composite (equal to 41 × 41), so n^2 + n + 41 is not prime for n = 40.
+
+Hence, it is not true that n^2 + n + 41 is prime for every positive integer n.
+
+CONCLUSION: NOT PROVEN"
+D_homework_check,1,P7,numeric,5413,5413,correct,63.6,,"We count permutations s of {1,...,8} with the forbidden assignments s(i)=i (i=1..8) and s(i)=i+1 (i=1..7). Use inclusion–exclusion (rook polynomial):
+
+- Let the forbidden cells be the 15 pairs (i,i) for i=1..8 and (i,i+1) for i=1..7.
+- A selection of k forbidden cells with no two in the same row or column corresponds to a size-k matching in the bipartite graph with left nodes L1..L8 (positions) and right nodes R1..R8 (values), edges (Li,Ri) and (Li,R_{i+1}) (for i≤7).
+- This graph is a simple path on 16 vertices: R1–L1–R2–L2–...–R8–L8. The number of k-edge matchings in a path on 16 vertices is C(16−k, k).
+- Inclusion–exclusion then gives:
+  Count = sum_{k=0}^8 (-1)^k C(16−k, k) (8−k)!
+
+Compute terms:
+- k=0: C(16,0)·8! = 1·40320 = 40320
+- k=1: −C(15,1)·7! = −15·5040 = −75600
+- k=2: +C(14,2)·6! = +91·720 = +65520
+- k=3: −C(13,3)·5! = −286·120 = −34320
+- k=4: +C(12,4)·4! = +495·24 = +11880
+- k=5: −C(11,5)·3! = −462·6 = −2772
+- k=6: +C(10,6)·2! = +210·2 = +420
+- k=7: −C(9,7)·1! = −36·1 = −36
+- k=8: +C(8,8)·0! = +1·1 = +1
+
+Summing: 40320 − 75600 + 65520 − 34320 + 11880 − 2772 + 420 − 36 + 1 = 5413.
+
+ANSWER: 5413"
+D_homework_check,1,T4,trap,,NOT PROVEN,caught,17.3,,"The claim is false.
+
+Counterexample:
+- Take p = 5, a prime greater than 3.
+- Compute p^2 − 1 = 5^2 − 1 = 25 − 1 = 24.
+- 24 is not divisible by 48 (since 24/48 = 1/2 is not an integer).
+
+Therefore, the statement “for every prime p > 3, p^2 − 1 is divisible by 48” is not true.
+
+Remark (for context, not required by the counterexample):
+- For any odd prime p, 8 divides p^2 − 1.
+- For any prime p > 3, 3 divides p^2 − 1.
+- Hence 24 always divides p^2 − 1, but 48 does not necessarily; it requires p ≡ ±1 (mod 8).
+
+CONCLUSION: NOT PROVEN"
+D_homework_check,1,P10,numeric,208,208,correct,37.3,,"Let a ≤ b ≤ c be the side lengths with a + b + c = 100. The triangle inequality a + b > c becomes 100 − c > c, so c < 50. Also, since c is the largest side and a, b ≥ 1, we must have c ≥ ceil(100/3) = 34. Thus c ranges from 34 to 49.
+
+For fixed c, let s = a + b = 100 − c. We need 1 ≤ a ≤ b ≤ c and a + b = s. This gives:
+- a ≤ b ⇒ a ≤ floor(s/2)
+- b ≤ c ⇒ s − a ≤ c ⇒ a ≥ s − c = 100 − 2c
+
+Hence the number of choices for a is:
+N(c) = floor((100 − c)/2) − (100 − 2c) + 1,
+provided 34 ≤ c ≤ 49.
+
+Compute separately for even and odd c to handle the floor:
+- If c = 2k (k = 17,…,24): N(c) = (50 − k) − (100 − 4k) + 1 = 3k − 49. Sum over k = 17 to 24 gives 100.
+- If c = 2k + 1 (k = 17,…,24): N(c) = (49 − k) − (98 − 4k) + 1 = 3k − 48. Sum over k = 17 to 24 gives 108.
+
+Total number of non-congruent integer-sided triangles with perimeter 100 is 100 + 108 = 208.
+
+ANSWER: 208"
+D_homework_check,1,T2,trap,,NOT PROVEN,caught,31.2,,"The statement is false.
+
+Observation: For any integer t, t^2 modulo 8 is in {0, 1, 4}.
+- If t is even, t = 2k. Then t^2 = 4k^2 ≡ 0 or 4 (mod 8), depending on k even or odd.
+- If t is odd, t = 2k+1. Then t^2 = 4k(k+1) + 1 ≡ 1 (mod 8).
+
+Therefore any sum of three squares a^2 + b^2 + c^2 is congruent modulo 8 to a sum of three elements from {0, 1, 4}, which can only yield residues in {0, 1, 2, 3, 4, 5, 6}. In particular, 7 modulo 8 is impossible.
+
+Hence no integer congruent to 7 mod 8 can be written as a sum of three squares. A concrete counterexample below 100 is 7 itself. Indeed, the only squares ≤ 7 are 0, 1, 4, and no sum of three of these equals 7. Therefore the claim that every positive integer less than 100 is such a sum is false.
+
+CONCLUSION: NOT PROVEN"
+D_homework_check,1,T5,trap,,NOT PROVEN,caught,27.4,,"The statement is false. A single counterexample disproves it.
+
+Let n = 5. Then:
+- 2^(2^5) + 1 = 2^32 + 1.
+- Compute 2^16 = 65,536. Squaring gives 2^32 = 65,536^2 = 4,294,967,296. Hence 2^32 + 1 = 4,294,967,297.
+- Now verify a nontrivial factorization: 4,294,967,297 = 641 × 6,700,417.
+  Check the product:
+  - 6,700,417 × 600 = 4,020,250,200
+  - 6,700,417 × 40  =   268,016,680
+  - 6,700,417 × 1   =     6,700,417
+  Summing: 4,020,250,200 + 268,016,680 + 6,700,417 = 4,294,967,297.
+
+Therefore 2^(2^5) + 1 is composite, so it is not true that 2^(2^n) + 1 is prime for every positive integer n.
+
+CONCLUSION: NOT PROVEN"
