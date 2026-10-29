@@ -92,6 +92,11 @@
       "unit": "%",
       "max_week": 100
     },
+    "bitcoin": {
+      "label": "Bitcoin price",
+      "unit": "%",
+      "max_week": 60
+    },
     "fear": {
       "label": "Market fear (VIX)",
       "unit": "%",

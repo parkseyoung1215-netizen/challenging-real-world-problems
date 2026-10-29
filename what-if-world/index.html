@@ -440,7 +440,7 @@ async function viewQuestion() {
   }
   if (qSel === null || qSel >= qs.length) qSel = qs.length - 1;
   const q = qs[qSel];
-  $("view").innerHTML = `<div class="buttons" style="margin:0 0 8px"><select id="qpick">${qs.map((x, i) => `<option value="${i}" ${i === qSel ? "selected" : ""}>${esc(x.question)} (${x.asked.replace("T", " ")})</option>`).join("")}</select></div><div id="qbody" class="small">불러오는 중…</div>`;
+  $("view").innerHTML = `<div class="buttons" style="margin:0 0 8px"><select id="qpick">${qs.map((x, i) => `<option value="${i}" ${i === qSel ? "selected" : ""}>${esc(x.question)} (${x.asked.replace("T", " ").slice(0, 16)})</option>`).join("")}</select></div><div id="qbody" class="small">불러오는 중…</div>`;
   $("qpick").onchange = e => { qSel = +e.target.value; viewQuestion(); };
   let worlds;
   try { worlds = await Promise.all(q.outcomes.map(o => call("/api/branch?name=" + encodeURIComponent(o.branch)))); }
@@ -448,7 +448,7 @@ async function viewQuestion() {
   const start = q.from_week;
   const unit = q.span === "day" ? "하루" : "1주";
   $("qbody").innerHTML = `
-    <p class="small">${q.from_branch === "(새 현재 세계)" ? "깨끗한 현재 세계" : `'${esc(q.from_branch)}' ${q.from_week}단계`}에서 출발해 ${unit} 단위로 ${q.weeks}번 돌렸어요. 숫자는 모두 <b>질문을 던진 시점 대비</b> 변화예요. 기록 시각 ${q.asked.replace("T", " ")}.</p>
+    <p class="small">${q.from_branch === "(새 현재 세계)" ? "깨끗한 현재 세계" : `'${esc(q.from_branch)}' ${q.from_week}단계`}에서 출발해 ${unit} 단위로 ${q.weeks}번 돌렸어요. 숫자는 모두 <b>질문을 던진 시점 대비</b> 변화예요. 기록 시각 ${q.asked.replace("T", " ").slice(0, 16)}.</p>
     <div class="qcols" style="grid-template-columns: repeat(${Math.min(q.outcomes.length, 3)}, minmax(0, 1fr))">
       ${q.outcomes.map((o, i) => { const hs = worlds[i].history.slice(start);
         return `<div class="qcol"><h4>${esc(o.name)}</h4>
@@ -457,9 +457,50 @@ async function viewQuestion() {
           ${hs.map(h => `<p><b>${stepLabel(h)}</b> ${esc(h.narrative)}</p>`).join("")}
           <button class="x" data-open="${esc(o.branch)}">이 세계 자세히 보기</button></div>`; }).join("")}
     </div>
-    ${diffTable(q, worlds)}`;
+    ${diffTable(q, worlds)}
+    ${scoreBox(q)}`;
+  bindScore(q);
   document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => { $("detail").open = true; tab = "chain"; act("/api/branch/switch", {name: b.dataset.open}, "갈래를 여는 중…"); });
   document.querySelectorAll("#qbody [data-item]").forEach(el => el.onclick = () => { sel = el.dataset.item; renderChartMulti(q, worlds); });
+}
+
+// ---------- prediction log: score a question after the event ----------
+function pct(x) { return x === null || x === undefined ? "–" : (x > 0 ? "+" : "") + (+x).toFixed(2) + "%"; }
+function scoreTable(title, s) {
+  return `<p><b>${title}</b>: 방향 ${s.hits}/${s.count} 맞음 · 평균 크기 오차 ${s.mean_error ?? "–"}%p</p>
+    <table><tr><th>시장</th><th>예측</th><th>실제</th><th>방향</th></tr>
+    ${s.rows.map(r => `<tr><td>${esc(r.label)}</td><td>${pct(r.predicted)}</td><td>${pct(r.actual)}</td><td>${r.hit ? "✅" : "❌"}</td></tr>`).join("")}</table>`;
+}
+function scoreBox(q) {
+  const sb = data.scoreboard || {};
+  const total = sb.questions ? `<p class="small">지금까지 채점한 질문 ${sb.questions}개 · 실제 결과 기준 방향 ${sb.outcome_score.hits}/${sb.outcome_score.count} · 결과 모를 때 예측 기준 방향 ${sb.forecast_score.hits}/${sb.forecast_score.count}</p>` : "";
+  const r = q.result;
+  const done = r ? `<p class="small">실제로 일어난 결과: <b>${esc(r.happened)}</b> · 실제 숫자 출처: ${esc(r.source)} · 채점 ${esc((r.scored || "").replace("T", " ").slice(0, 16))}</p>
+    ${scoreTable("실제 결과의 세계", r.outcome_score)}
+    ${scoreTable("결과를 모를 때의 예측 (확률로 섞은 평균)", r.forecast_score)}
+    <p class="small">자동매매에 쓸 수 있는 건 두 번째 표예요. 매매는 결과를 모르는 상태에서 해야 하니까요.</p>` : "";
+  const names = q.outcomes.map(o => `<option>${esc(o.name)}</option>`).join("");
+  const manual = Object.entries(data.markets || {}).map(([id, label]) =>
+    `<label class="small" style="display:inline-block;margin:2px 8px 2px 0">${esc(label)} <input data-act="${id}" type="number" step="0.01" style="width:70px">%</label>`).join("");
+  return `<details class="score" ${r ? "open" : ""}><summary><b>예측 채점</b> ${r ? "(채점됨)" : "(이벤트가 끝나면 채점)"}</summary>
+    ${total}${done}
+    <p class="small">이벤트가 끝난 뒤, 실제로 일어난 결과를 고르고 채점을 누르세요. 실제 시장 숫자는 자동 업데이트 기록(질문 시점 → 가장 최근)에서 가져와요. 숫자를 직접 넣으면 그걸 써요.</p>
+    <div class="buttons"><select id="shappened">${names}</select>
+      <button class="primary" id="sgo">${r ? "다시 채점" : "채점"}</button></div>
+    <details><summary class="small">실제 변화 직접 입력 (선택)</summary>${manual}</details></details>`;
+}
+function bindScore(q) {
+  const b = $("sgo"); if (!b) return;
+  if (q.result) $("shappened").value = q.result.happened;
+  b.onclick = () => {
+    const actual = {};
+    document.querySelectorAll("[data-act]").forEach(el => { if (el.value !== "") actual[el.dataset.act] = +el.value; });
+    busy("채점하는 중…", async () => {
+      data = await call("/api/question/resolve", {index: q.index, happened: $("shappened").value,
+        actual: Object.keys(actual).length ? actual : null});
+      render();
+    });
+  };
 }
 
 function baseOf(w, q, id) {

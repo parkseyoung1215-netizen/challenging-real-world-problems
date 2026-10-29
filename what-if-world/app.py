@@ -18,6 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 from engine import HERE, SAVES, World, list_branches, load_today, suggest_outcomes
+import score
 
 PORT = int(os.environ.get("WHATIF_PORT", "8000"))
 lock = Lock()  # one change at a time
@@ -80,7 +81,10 @@ def run_question(question, outcomes, weeks, span="week", start="fresh"):
 
     with ThreadPoolExecutor(max_workers=len(made)) as pool:
         names = list(pool.map(run, made))
-    q = {"question": question, "asked": datetime.now().isoformat(timespec="minutes"),
+    now = datetime.now().astimezone()
+    known = score.levels_before(now)
+    q = {"question": question, "asked": now.isoformat(timespec="minutes"),
+         "markets_at_ask": {"file": known["file"], "markets": known["markets"]} if known else None,
          "from_branch": base.name if base else "(새 현재 세계)", "from_week": base.state["week"] if base else 0,
          "weeks": weeks, "span": span,
          "outcomes": [{"name": list(probs)[i], "event": o["event"], "prob": list(probs.values())[i],
@@ -88,6 +92,36 @@ def run_question(question, outcomes, weeks, span="week", start="fresh"):
                       for i, o in enumerate(outcomes)]}
     qs = load_questions()
     qs.append(q)
+    save_questions(qs)
+    return q
+
+
+def resolve_question(index, happened, actual=None, event_time=None):
+    """Score a question after the event. actual: {item: %} typed by hand, else from snapshots."""
+    qs = load_questions()
+    if not 0 <= index < len(qs):
+        raise ValueError("그런 질문이 없어요")
+    q = qs[index]
+    if happened not in [o["name"] for o in q["outcomes"]]:
+        raise ValueError("실제로 일어난 결과를 골라주세요")
+    note = "직접 입력"
+    if actual:
+        actual = {k: float(v) for k, v in actual.items() if k in score.MARKETS and str(v).strip() != ""}
+    else:
+        start = q.get("markets_at_ask") or score.levels_before(score.when(q["asked"]))
+        end = (score.levels_after(score.when(event_time)) if event_time
+               else score.levels_before(datetime.now().astimezone()))
+        if not start or not end or start["file"] == end["file"]:
+            raise ValueError("질문 전후의 시장 기록이 아직 없어요. 다음 자동 업데이트 뒤에 다시 채점하거나 숫자를 직접 넣어주세요")
+        actual = score.actual_moves(start, end)
+        note = f"{start['file']} → {end['file']}"
+    if not actual:
+        raise ValueError("비교할 실제 숫자가 없어요")
+    histories = {o["branch"]: (branches[o["branch"]].history if o["branch"] in branches else [])
+                 for o in q["outcomes"]}
+    q["result"] = score.score(q, histories, happened, actual)
+    q["result"]["source"] = note
+    q["result"]["scored"] = datetime.now().astimezone().isoformat(timespec="minutes")
     save_questions(qs)
     return q
 
@@ -107,8 +141,13 @@ class Handler(BaseHTTPRequestHandler):
 
     def everything(self):
         w = branches[active]
+        qs = load_questions()
+        for i, q in enumerate(qs):
+            q["index"] = i
         return {"config": w.cfg, "active": active, "branches": branch_info(),
-                "state": w.state, "history": w.history, "questions": load_questions()[-20:],
+                "state": w.state, "history": w.history, "questions": qs[-20:],
+                "scoreboard": score.scoreboard(qs),
+                "markets": {k: v[2] for k, v in score.MARKETS.items()},
                 "today": load_today()}
 
     def do_GET(self):
@@ -148,6 +187,9 @@ class Handler(BaseHTTPRequestHandler):
                     data = self.everything()
                     data["last_question"] = result
                     return self.send(200, data)
+                elif self.path == "/api/question/resolve":
+                    resolve_question(int(body.get("index", -1)), str(body.get("happened") or ""),
+                                     body.get("actual") or None, body.get("event_time") or None)
                 elif self.path == "/api/context":
                     w.set_context(body.get("lines") or [])
                     for other in branches.values():

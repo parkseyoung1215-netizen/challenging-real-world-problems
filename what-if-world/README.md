@@ -58,6 +58,27 @@ it: a cut that everyone expected barely moves stocks, a surprise hold moves them
 the event the game master updates what markets expect next (for example the chance of another
 cut). Expectations come from the author; the simulator never invents today's odds.
 
+## Prediction log: is it right?
+
+Every question is saved with the time it was asked and the market levels known at that moment.
+After the event, pick the outcome that really happened and press "score" (채점). The app
+compares with the real market moves (S&P 500, KOSPI, Nikkei, STOXX 600, dollar index, won,
+gold, Brent, VIX, Bitcoin), taken from the market levels the scheduled update saves three
+times a day (`score.py`). Real moves can also be typed in by hand. Two scores are kept:
+
+- **The outcome that happened**: did that world get the direction and size of each market right?
+- **The forecast before the outcome was known**: the probability-weighted average of all outcome
+  worlds. This is the only number a trading rule could have used, because nobody knows the outcome
+  in advance.
+
+A running total over all scored questions shows whether the simulator beats a coin flip.
+Moves smaller than 0.2% count as "flat".
+
+First case (Fed, 28 October 2026): the outcome (hold) was the most likely one, but 0 of 4 market
+directions were right. The question had been run from a test world in which the Fed had just cut
+rates, while in reality it had raised them in September and markets priced a hold at 93%. Lesson:
+start from a clean world and use real market probabilities.
+
 ## Branches: compare two worlds
 
 A what-if needs something to compare with. Make a branch from any past week, give each
@@ -85,4 +106,6 @@ today, because the model may not know recent events.
 
 ## Status
 
-Working prototype. Next: check the simulator's predictions against what really happens.
+Working prototype. Predictions are now scored against real market moves. Next: collect
+enough scored questions (20 or more) before trusting any number, size reactions with real data
+from past events, and run each question several times to see how stable the answer is.
