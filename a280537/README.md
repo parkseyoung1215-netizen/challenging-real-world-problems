@@ -13,7 +13,7 @@ What I took away from this challenge is that I should keep trying to use AI to w
 
 **Update (2026-11-01).** The bound went from 58 to 59. The 59-point configuration is symmetric under the rotation (x, y, z) → (y, z, x): it consists of 19 orbits of 3 points plus 2 points on the diagonal x = y = z. Searching only among symmetric configurations made the search space about three times smaller, which is how it got past 58. The 58-point file is kept for the record.
 
-**Archived:** Zenodo, https://doi.org/10.5281/zenodo.23700817 (archived version: the 58-point result)
+**Archived:** Zenodo, https://doi.org/10.5281/zenodo.23868353 (version 2, 59 points; version 1 with 58 points: https://doi.org/10.5281/zenodo.23700817)
 
 **Previous best known.** Al Zimmermann's 2016 contest "Non-Coplanar Points" reports 66 points for n = 29. Any plane x = const can hold at most 3 points, so removing the three outer layers x = 28, y = 28 and z = 28 from a 66-point configuration removes at most 9 points and leaves at least 57 points in the 28 × 28 × 28 grid. So a(28) ≥ 57 follows from the n = 29 result. The contest configurations are not public, so 57 is the best bound that can be derived from published values. 58 improved it by one, and 59 by two.
 
